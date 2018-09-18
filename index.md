@@ -1,1 +1,1 @@
-- [R培训ppt](R_train/R.html)
+- [R培训ppt](https://lengyuyeke.github.io/R_train/R.html)
