@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>R</title>
+    <meta charset="utf-8">
+    <meta name="author" content="李朋飞" />
+    <meta name="date" content="2018-09-18" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding/plotly.js"></script>
+    <script src="libs/typedarray/typedarray.min.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="zh-CN.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R
+### 李朋飞
+### 2018-09-18
+
+---
+
+
+
+# 简介
+
+## The R Project for Statistical Computing
+
+
+R is a free software environment for **statistical computing** and **graphics**
+
+R is ‘GNU S’, a freely available language and environment for statistical computing and graphics which provides a wide variety of statistical and graphical techniques: linear and nonlinear modelling, statistical tests, time series analysis, classification, clustering, etc
+
+.footnote[
+1. https://cloud.r-project.org/index.html
+]
+
+???
+R是一个统计和绘图软件
+
+---
+# 特点
+
+1. 包含了大量的统计方面的计算
+
+2. 处理数据量小
+
+3. 画图功能强大
+
+4. 扩展性强(包)
+
+---
+# 目录
+
+1. R语言安装与简介
+
+2. R语言基本数据结构及操作
+
+3. R语言数据读写 
+
+4. R包
+
+  4.1 data.table
+  
+  4.2 RMySQL
+  
+  4.3 reshape2
+  
+  4.4 ggplot2
+  
+  4.5 shiny
+
+
+---
+# 1. R语言安装与入门
+
+## R 安装
+
+- Windows (exe)
+
+- MAC (DMG)
+
+- LINUX 
+
+```
+# install R
+yum install R
+```
+
+.footnote[
+1. https://cloud.r-project.org/index.html
+2. https://www.rstudio.com/products/rstudio/download/
+]
+
+---
+## IDE : Rstudio 
+
+RStudio is a set of integrated tools designed to help you be more productive with R. It includes a console, syntax-highlighting editor that supports direct code execution, and a variety of robust tools for plotting, viewing history, debugging and managing your workspace.
+
+- install Rstudio
+```
+$ wget https://download2.rstudio.org/rstudio-server-rhel-1.1.447-x86_64.rpm
+$ sudo yum install rstudio-server-rhel-1.1.447-x86_64.rpm
+```
+- 访问 url : ip:8787
+
+---
+## R 入门
+
+
+```r
+age = c(1,3,5,2,11,9)
+weight = c(4.4,5.3,7.2,5,8.5,7.3)
+mean(weight)
+```
+
+```
+## [1] 6.283333
+```
+
+```r
+sd(weight)
+```
+
+```
+## [1] 1.609244
+```
+
+```r
+cor(age,weight)
+```
+
+```
+## [1] 0.9494496
+```
+---
+
+```r
+par(family="STHeiti")
+plot(age,weight,main = "体重随年龄的变化")
+```
+
+![](R_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+
+
+---
+# 2. R语言数据结构
+
+- 向量
+- 矩阵
+- 数据框
+- 列表
+- 因子
+- 数组
+
+---
+## 数据类型
+- 字符
+
+```r
+"a"
+```
+
+```
+## [1] "a"
+```
+- 数字
+
+```r
+1
+```
+
+```
+## [1] 1
+```
+- 逻辑变量
+
+```r
+c(T,F,TRUE,FALSE)
+```
+
+```
+## [1]  TRUE FALSE  TRUE FALSE
+```
+---
+- 空
+
+```r
+NA    ## 占位符
+```
+
+```
+## [1] NA
+```
+
+```r
+length(NA)
+```
+
+```
+## [1] 1
+```
+
+```r
+NULL  ## 空
+```
+
+```
+## NULL
+```
+
+```r
+length(NULL)
+```
+
+```
+## [1] 0
+```
+
+---
+## 向量
+
+```r
+a = 1 
+print(a)
+```
+
+```
+## [1] 1
+```
+
+```r
+b = c(1,2,3,4,-1,0)
+print(b)
+```
+
+```
+## [1]  1  2  3  4 -1  0
+```
+
+```r
+d = c("a","b","c")
+print(d)
+```
+
+```
+## [1] "a" "b" "c"
+```
+
+```r
+e = c(TRUE,FALSE,T,F)
+print(e)
+```
+
+```
+## [1]  TRUE FALSE  TRUE FALSE
+```
+---
+## 向量特点
+
+1. 同一数据类型
+
+2. 非同一数据类型会进行转换
+
+
+```r
+( a = c("a",1,3) )
+```
+
+```
+## [1] "a" "1" "3"
+```
+
+```r
+( b = c(1,TRUE) )
+```
+
+```
+## [1] 1 1
+```
+
+```r
+( d = c(T,"a") )
+```
+
+```
+## [1] "TRUE" "a"
+```
+---
+## 向量下标
+
+
+```r
+a = c("a","b","c","d")
+length(a)
+```
+
+```
+## [1] 4
+```
+
+```r
+a[c(1,3)]
+```
+
+```
+## [1] "a" "c"
+```
+
+```r
+a[1:3]
+```
+
+```
+## [1] "a" "b" "c"
+```
+
+```r
+a[-1]
+```
+
+```
+## [1] "b" "c" "d"
+```
+
+---
+## 矩阵
+
+- 数据元素类型唯一
+
+
+```r
+a = matrix(1:10,nrow=2,dimnames = c())
+a
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    3    5    7    9
+## [2,]    2    4    6    8   10
+```
+
+```r
+a[2]
+```
+
+```
+## [1] 2
+```
+
+```r
+a[,1]
+```
+
+```
+## [1] 1 2
+```
+
+```r
+a[1,]
+```
+
+```
+## [1] 1 3 5 7 9
+```
+---
+## 矩阵 --&gt; 向量
+
+
+```r
+vector_a = as.vector(a)
+vector_a
+```
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```r
+class(vector_a)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+is.vector(a)
+```
+
+```
+## [1] FALSE
+```
+
+---
+## 向量 --&gt; 矩阵
+
+
+```r
+matrix_a = as.matrix(vector_a)
+matrix_a
+```
+
+```
+##       [,1]
+##  [1,]    1
+##  [2,]    2
+##  [3,]    3
+##  [4,]    4
+##  [5,]    5
+##  [6,]    6
+##  [7,]    7
+##  [8,]    8
+##  [9,]    9
+## [10,]   10
+```
+
+```r
+matrix(vector_a,nrow=2)
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    3    5    7    9
+## [2,]    2    4    6    8   10
+```
+---
+## 数据框
+
+- 每一列的元素类型可以不同
+
+
+```r
+df = data.frame(
+  name = letters[1:6],
+  age = c(1,3,5,2,11,9),
+  weight = c(4.4,5.3,7.2,5,8.5,7.3)
+)
+df
+```
+
+```
+##   name age weight
+## 1    a   1    4.4
+## 2    b   3    5.3
+## 3    c   5    7.2
+## 4    d   2    5.0
+## 5    e  11    8.5
+## 6    f   9    7.3
+```
+---
+### 数据框属性
+
+```r
+dim(df)
+```
+
+```
+## [1] 6 3
+```
+
+```r
+colnames(df)
+```
+
+```
+## [1] "name"   "age"    "weight"
+```
+
+```r
+rownames(df)
+```
+
+```
+## [1] "1" "2" "3" "4" "5" "6"
+```
+
+```r
+str(df)
+```
+
+```
+## 'data.frame':	6 obs. of  3 variables:
+##  $ name  : Factor w/ 6 levels "a","b","c","d",..: 1 2 3 4 5 6
+##  $ age   : num  1 3 5 2 11 9
+##  $ weight: num  4.4 5.3 7.2 5 8.5 7.3
+```
+
+---
+### 数据框操作
+- 下标
+
+```r
+df[c(1,2),c(1:3)]
+```
+
+```
+##   name age weight
+## 1    a   1    4.4
+## 2    b   3    5.3
+```
+
+```r
+df[c(1,2),c("name","age")]
+```
+
+```
+##   name age
+## 1    a   1
+## 2    b   3
+```
+
+```r
+df[1,]  # 取某行 
+```
+
+```
+##   name age weight
+## 1    a   1    4.4
+```
+
+```r
+df[,2] # 取某列
+```
+
+```
+## [1]  1  3  5  2 11  9
+```
+---
+- 返回值类型
+
+
+```r
+df1 = df[2]
+df1
+```
+
+```
+##   age
+## 1   1
+## 2   3
+## 3   5
+## 4   2
+## 5  11
+## 6   9
+```
+
+```r
+class(df1)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+df2 = df[,2]
+df2
+```
+
+```
+## [1]  1  3  5  2 11  9
+```
+
+```r
+class(df2)
+```
+
+```
+## [1] "numeric"
+```
+
+---
+- 返回值类型
+
+```r
+df3 = df[,2,drop=FALSE]
+df3
+```
+
+```
+##   age
+## 1   1
+## 2   3
+## 3   5
+## 4   2
+## 5  11
+## 6   9
+```
+
+```r
+class(df3)
+```
+
+```
+## [1] "data.frame"
+```
+
+---
+### 数据框合并
+
+
+```r
+df3 = cbind(df,df)
+df3 
+```
+
+```
+##   name age weight name age weight
+## 1    a   1    4.4    a   1    4.4
+## 2    b   3    5.3    b   3    5.3
+## 3    c   5    7.2    c   5    7.2
+## 4    d   2    5.0    d   2    5.0
+## 5    e  11    8.5    e  11    8.5
+## 6    f   9    7.3    f   9    7.3
+```
+
+```r
+df4 = rbind(df,df)
+df4
+```
+
+```
+##    name age weight
+## 1     a   1    4.4
+## 2     b   3    5.3
+## 3     c   5    7.2
+## 4     d   2    5.0
+## 5     e  11    8.5
+## 6     f   9    7.3
+## 7     a   1    4.4
+## 8     b   3    5.3
+## 9     c   5    7.2
+## 10    d   2    5.0
+## 11    e  11    8.5
+## 12    f   9    7.3
+```
+
+---
+## 列表
+
+
+```r
+a = c(1:3)
+b = c ("a","b","c","d")
+e = matrix(1:10,nrow=2)
+l = list(a=a,b=b,e=e)
+l
+```
+
+```
+## $a
+## [1] 1 2 3
+## 
+## $b
+## [1] "a" "b" "c" "d"
+## 
+## $e
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    3    5    7    9
+## [2,]    2    4    6    8   10
+```
+---
+## 列表基本操作
+
+```r
+l[1]
+```
+
+```
+## $a
+## [1] 1 2 3
+```
+
+```r
+l['a']  # 返回list
+```
+
+```
+## $a
+## [1] 1 2 3
+```
+
+```r
+l[['a']] # 返回存储内容
+```
+
+```
+## [1] 1 2 3
+```
+
+```r
+l$a      # 返回存储内容
+```
+
+```
+## [1] 1 2 3
+```
+
+---
+## 因子
+
+```r
+factor(letters[c(1:5,1:2)], labels = "letter")
+```
+
+```
+## [1] letter1 letter2 letter3 letter4 letter5 letter1 letter2
+## Levels: letter1 letter2 letter3 letter4 letter5
+```
+
+```r
+(m = factor(2:3))
+```
+
+```
+## [1] 2 3
+## Levels: 2 3
+```
+
+```r
+levels(m)
+```
+
+```
+## [1] "2" "3"
+```
+
+```r
+levels(m)=1:2
+m
+```
+
+```
+## [1] 1 2
+## Levels: 1 2
+```
+---
+- 因子类型转换
+
+```r
+as.numeric(m)
+```
+
+```
+## [1] 1 2
+```
+
+```r
+as.numeric(as.character(m))  # 因子变为字符串，再变成数字
+```
+
+```
+## [1] 1 2
+```
+
+---
+## 控制和函数
+- for, if, while
+
+```r
+x = letters
+len = length(x)
+for (i in 1:len) {
+  if(i&gt;20) {
+    print (paste(i,x[i]))
+  }
+}
+```
+
+```
+## [1] "21 u"
+## [1] "22 v"
+## [1] "23 w"
+## [1] "24 x"
+## [1] "25 y"
+## [1] "26 z"
+```
+
+---
+## 函数
+
+```r
+print_max = function(x){
+  max_value = max(x)
+  print(sprintf("the max value is : %s",max_value))
+  return(max_value)
+}
+print_max
+```
+
+```
+## function(x){
+##   max_value = max(x)
+##   print(sprintf("the max value is : %s",max_value))
+##   return(max_value)
+## }
+```
+
+```r
+x = c(4,2,8,10)
+max_x = print_max(x)
+```
+
+```
+## [1] "the max value is : 10"
+```
+
+```r
+max_x
+```
+
+```
+## [1] 10
+```
+
+---
+# 文件读写
+- 数据框 : 规则数据
+
+```r
+f = tempfile()
+d = data.frame(a=sample(10),b=letters[1:10])
+write.table(d,file=f,    # 写文件
+            row.names = FALSE,
+            col.names = TRUE,
+            sep="\t"
+            )
+
+e = read.table(f,header = T, # 读文件
+               sep="\t",
+               stringsAsFactors = FALSE
+               )
+head(e)
+```
+
+```
+##    a b
+## 1  5 a
+## 2  2 b
+## 3  4 c
+## 4  9 d
+## 5  7 e
+## 6 10 f
+```
+
+---
+## 其他常用操作
+- 日期格式数据
+
+
+```r
+d = c("2018-08-01","2018-08-02")
+class(d)
+```
+
+```
+## [1] "character"
+```
+
+```r
+d_date = as.Date(d)
+class(d_date)
+```
+
+```
+## [1] "Date"
+```
+
+```r
+d_date+3
+```
+
+```
+## [1] "2018-08-04" "2018-08-05"
+```
+
+```r
+d_date[1] - d_date[2]  # as.numeric转为numeric
+```
+
+```
+## Time difference of -1 days
+```
+
+---
+- merge
+
+```r
+d = data.frame(date=Sys.Date()-1:10,
+              users = sample(10),
+              group=letters[1:10],
+              stringsAsFactors = FALSE
+              )
+head(d)
+```
+
+```
+##         date users group
+## 1 2018-09-17     1     a
+## 2 2018-09-16     5     b
+## 3 2018-09-15     9     c
+## 4 2018-09-14     2     d
+## 5 2018-09-13     8     e
+## 6 2018-09-12     7     f
+```
+
+```r
+str(d)
+```
+
+```
+## 'data.frame':	10 obs. of  3 variables:
+##  $ date : Date, format: "2018-09-17" "2018-09-16" ...
+##  $ users: int  1 5 9 2 8 7 3 10 6 4
+##  $ group: chr  "a" "b" "c" "d" ...
+```
+---
+- merge
+
+```r
+d1 = data.frame(group=letters[1:7],money=sample(7)*100)
+head(d1)
+```
+
+```
+##   group money
+## 1     a   400
+## 2     b   200
+## 3     c   700
+## 4     d   300
+## 5     e   600
+## 6     f   500
+```
+
+```r
+d2 = merge(d,d1,by="group",all.x=TRUE)
+d2
+```
+
+```
+##    group       date users money
+## 1      a 2018-09-17     1   400
+## 2      b 2018-09-16     5   200
+## 3      c 2018-09-15     9   700
+## 4      d 2018-09-14     2   300
+## 5      e 2018-09-13     8   600
+## 6      f 2018-09-12     7   500
+## 7      g 2018-09-11     3   100
+## 8      h 2018-09-10    10    NA
+## 9      i 2018-09-09     6    NA
+## 10     j 2018-09-08     4    NA
+```
+---
+- order : 排序
+
+```r
+d2[order(d2$money),]
+```
+
+```
+##    group       date users money
+## 7      g 2018-09-11     3   100
+## 2      b 2018-09-16     5   200
+## 4      d 2018-09-14     2   300
+## 1      a 2018-09-17     1   400
+## 6      f 2018-09-12     7   500
+## 5      e 2018-09-13     8   600
+## 3      c 2018-09-15     9   700
+## 8      h 2018-09-10    10    NA
+## 9      i 2018-09-09     6    NA
+## 10     j 2018-09-08     4    NA
+```
+- subset ：子集
+
+```r
+subset(d2,users&gt;6&amp;money&gt;200)
+```
+
+```
+##   group       date users money
+## 3     c 2018-09-15     9   700
+## 5     e 2018-09-13     8   600
+## 6     f 2018-09-12     7   500
+```
+
+```r
+# d2[d2$users&gt;6&amp;d2$money&gt;200,]
+```
+---
+- apply 分组计算
+```{}
+apply # 可以按行或者按列进行计算
+sapply # 对list中每个元素进行计算
+tapply # 分组计算
+```
+
+---
+- 正则
+
+```r
+gsub  # 全局替换
+grep  # 返回匹配的索引
+grepl # 返回TRUE和FALSE
+```
+
+---
+## 赋值
+
+```r
+a = 1:3
+a &lt;- 1:3
+```
+---
+## 查看帮助
+
+```r
+?lapply
+?"for"                  # but quotes/backticks are needed
+?`?`
+?women                  # information about data set "women"
+example(plot)
+```
+---
+## 常用函数
+```
+c : 生成向量
+matrix : 生成矩阵
+data.frame : 生成数据框
+list : 生成列表
+as.data.frame : 变为数据框
+as.character : 变为字符
+as.numeric : 变为数据
+class : 查看数据类型
+str : 查看数据结构
+length : 长度
+nrow : 数据框/矩阵 行数
+ncol : 数据框/矩阵 列数
+```
+---
+## 常用函数
+```
+sum : 求和
+min : 最小值
+mean : 均值
+sd : 方差
+Sys.Date : 获取日期
+as.Date : 字符串转换日期
+strftime : 时间格式化
+strptime : 字符串变为日期
+sort : 排序
+order : 排序值
+paste : 合并
+subset : 取子集
+unique : 去重
+coSums : 按列求和
+rowSums : 按行求和
+```
+---
+# R包
+
+Currently, the CRAN package repository features 13022 available packages.
+
+
+
+```r
+# .packages(all.available=TRUE) #列出可用R包
+# install.packages("ggplot2") # 安装包
+# library(ggplot2)  # 加载包
+# library(help="ggplot2") # 查看包所有函数
+# ?`ggplot2-package`   # 包的帮助文档
+search() #查看已经加载的R包
+```
+
+```
+## [1] ".GlobalEnv"        "package:stats"     "package:graphics" 
+## [4] "package:grDevices" "package:utils"     "package:datasets" 
+## [7] "package:methods"   "Autoloads"         "package:base"
+```
+.footnote[
+- ref
+
+[CRAN Task Views](https://cran.r-project.org/web/views/)
+]
+
+
+---
+# 连接数据库 RMySQL
+
+
+
+```r
+library(RMySQL)
+```
+
+```
+## Loading required package: DBI
+```
+
+```r
+db &lt;- dbConnect(
+    MySQL(),  host = talk$host,
+    port = talk$port, user = talk$user,
+    password = talk$password
+  )
+data &lt;- dbGetQuery(db,"select * from talk.user limit 10 ")
+```
+
+```
+## Warning in .local(conn, statement, ...): unrecognized MySQL field type 7 in
+## column 22 imported as character
+```
+
+```
+## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 51
+## imported as numeric
+```
+
+```r
+head(data)
+```
+
+```
+##   id             user_name                             username_mask
+## 1  1       niuq@51talk.com *B4A179294A02A6149154C865810E35756B5FD4DD
+## 2 54 hattorikei2@gmail.com *5E997D4AB9C3B0E99B849CABC433E5B539F2FD70
+## 3 56      379386332@qq.com *6105DB65FBCC2A8756012AFBAAC6D38557999CD9
+## 4 63   huangjj1@51talk.com *D2B12B1A175D39110A79B035661BF3CBBC66DC66
+## 5 66       masy@51talk.com *65F2D83819E63CA23A140E08FD6E1DB312C2A7E6
+## 6 67      358348961@qq.com *64CEDB4514710846D7EB0DC49D518CD84E8F4BC6
+##                           password real_name  nick_name   sex age
+## 1 96e79218965eb72c92a549dd5a330112      张仨    gaohanc   man   7
+## 2 e10adc3949ba59abbe56e057f20f883e      &lt;NA&gt; hattorikei  &lt;NA&gt;  NA
+## 3 054e239ea51513f828c2f82d724579c5      &lt;NA&gt;      linda woman  NA
+## 4 e10adc3949ba59abbe56e057f20f883e      &lt;NA&gt;       Jack  &lt;NA&gt;  NA
+## 5 d36c207432e30d188ea2b048a531f643    马书阳  mashuyang   man   6
+## 6 1d185fa4f1b4ee0d7a4521597c2e2119      &lt;NA&gt;      annie  &lt;NA&gt;  NA
+##      skype_id study_goal      mobile
+## 1  helloworld          1 137*****000
+## 2 talkchina-1       &lt;NA&gt; 139*****530
+## 3                   &lt;NA&gt; 135*****755
+## 4                   &lt;NA&gt;      0*****
+## 5                   &lt;NA&gt; 159*****506
+## 6                   &lt;NA&gt;      0*****
+##                                 mobile_mask wechat          trail_time
+## 1 *75361D0268EB0F33902CE14BA043E34268600FFE        2014-10-23 21:30:00
+## 2 *F5524AC96B9AF2E08904B61BA9502C1A9D8FBE05                       &lt;NA&gt;
+## 3 *2341FF827C81DB5A0E18AE5DD2DA4A3CC7ADA978                       &lt;NA&gt;
+## 4 *15D70C70E17B394F7785A8DD021C71621ADA8379                       &lt;NA&gt;
+## 5 *9B2EF282C9B46D9698D96568070CFF6A9D6AF5A0                       &lt;NA&gt;
+## 6 *15D70C70E17B394F7785A8DD021C71621ADA8379                       &lt;NA&gt;
+##   level current_level is_buy            buy_time status
+## 1     2            12    buy 2013-11-16 14:25:25     on
+## 2     0             3    buy                &lt;NA&gt;     on
+## 3     0            NA    buy                &lt;NA&gt;     on
+## 4     0            NA    buy                &lt;NA&gt;    off
+## 5     0             5    buy                &lt;NA&gt;     on
+## 6     0            NA    buy                &lt;NA&gt;     on
+##              add_time ext_id remark           last_time level_desc
+## 1 2013-09-01 12:11:55   &lt;NA&gt;        2018-01-08 19:24:07           
+## 2 2011-10-29 11:11:35   &lt;NA&gt;   &lt;NA&gt; 2016-12-23 16:55:49        6-3
+## 3 2011-10-03 20:11:36   &lt;NA&gt;   &lt;NA&gt; 2018-05-04 22:30:14          2
+## 4 2011-10-11 19:50:39   &lt;NA&gt;   &lt;NA&gt; 2016-12-23 16:57:35       &lt;NA&gt;
+## 5 2011-10-19 10:15:27   &lt;NA&gt;   &lt;NA&gt; 2018-09-05 16:34:13       &lt;NA&gt;
+## 6 2011-10-19 14:05:44   &lt;NA&gt;   &lt;NA&gt; 2016-12-23 15:52:40       &lt;NA&gt;
+##   purpose_desc now_level from_ip        qq follow default_teach_type
+## 1            3         3    &lt;NA&gt;                n                 qq
+## 2            1         3    &lt;NA&gt;      &lt;NA&gt;      n               &lt;NA&gt;
+## 3            1        NA    &lt;NA&gt; 379386332      n               &lt;NA&gt;
+## 4         &lt;NA&gt;        NA    &lt;NA&gt;                n               &lt;NA&gt;
+## 5            3         1    &lt;NA&gt;   8963000      n           51TalkAC
+## 6         &lt;NA&gt;        NA    &lt;NA&gt;      &lt;NA&gt;      n               &lt;NA&gt;
+##   from_url parent_id custom_id invite_costomer occup grade key_word
+## 1     &lt;NA&gt;         0 500001674             110     2     0     &lt;NA&gt;
+## 2     &lt;NA&gt;         1         0               0     0     0     &lt;NA&gt;
+## 3     &lt;NA&gt;         0   4016462               0     1     0     &lt;NA&gt;
+## 4     &lt;NA&gt;         0         0               0     0     0     &lt;NA&gt;
+## 5     &lt;NA&gt;         0   4014948            4962     1     4     &lt;NA&gt;
+## 6     &lt;NA&gt;         0         0               0     0     0     &lt;NA&gt;
+##   province   city mobile_code is_check is_trail register_from
+## 1   北京市 北京市       19710        y        y             0
+## 2     北京   北京           0        n        n             0
+## 3   北京市 北京市           0        n        n             0
+## 4     &lt;NA&gt;   &lt;NA&gt;           0        n        n             0
+## 5   北京市 北京市       55185        y        n             0
+## 6     &lt;NA&gt;   &lt;NA&gt;           0        n        n             0
+##   sina_weibo_id from_url_id test_level edm_flag        user_addr post_num
+## 1           ios           0          0        9   北京房山区19号   123456
+## 2           ios           0          0       NA             &lt;NA&gt;     &lt;NA&gt;
+## 3          &lt;NA&gt;           0          0       NA             &lt;NA&gt;     &lt;NA&gt;
+## 4          &lt;NA&gt;           0          0       NA             &lt;NA&gt;     &lt;NA&gt;
+## 5           ios           0          1        9 北京北京市西城区         
+## 6          &lt;NA&gt;           0          0       NA             &lt;NA&gt;     &lt;NA&gt;
+##   is_bargain sign user_type is_staff   birthday
+## 1          0 &lt;NA&gt;         1        y 2014-01-02
+## 2          0 &lt;NA&gt;         1        y       &lt;NA&gt;
+## 3          0 &lt;NA&gt;         1        n 2016-01-01
+## 4          0 &lt;NA&gt;         1        n       &lt;NA&gt;
+## 5          0 &lt;NA&gt;         1        y 1998-12-16
+## 6          0 &lt;NA&gt;         1        y       &lt;NA&gt;
+##                                                    avatar avatar_oss_fid
+## 1 ../upload/avatar/2014/0604/20140604161329163_avatar.png               
+## 2                                                    &lt;NA&gt;               
+## 3                                                    &lt;NA&gt;               
+## 4                                                    &lt;NA&gt;               
+## 5 ../upload/avatar/2017/0330/20170330145137270_avatar.jpg               
+## 6                                                    &lt;NA&gt;
+```
+---
+- 建立连接之后，进行数据查询，之后最好断开连接，因为超过16个连接之后会报错，在shiny中要特别注意。
+
+```r
+dbDisconnect(db) # 断开连接
+```
+
+```
+## [1] TRUE
+```
+
+```r
+# dbWriteTable
+# library(help=RMySQL)
+```
+
+---
+# data.table 
+
+继承与data.frame,但是更强大，更方便
+
+
+```r
+library(data.table)
+## 读文件
+dt = fread(f) # fast than read.table and more convient
+dt
+```
+
+```
+##      a b
+##  1:  5 a
+##  2:  2 b
+##  3:  4 c
+##  4:  9 d
+##  5:  7 e
+##  6: 10 f
+##  7:  3 g
+##  8:  8 h
+##  9:  6 i
+## 10:  1 j
+```
+
+```r
+class(dt)
+```
+
+```
+## [1] "data.table" "data.frame"
+```
+---
+- 数据库转为data.table
+
+```r
+DF = data.frame(x=rep(c("b","a","c"),each=3), y=c(1,3,6), v=1:9)
+class(DF)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+setDT(DF)
+class(DF)
+```
+
+```
+## [1] "data.table" "data.frame"
+```
+---
+- 子集
+
+
+```r
+DT[2]                          # 2nd row
+DT[3:2]                        # 3rd and 2nd row
+DT[order(x)]                   # no need for order(DT$x)
+DT[order(x), ]                 # same as above. The ',' is optional
+DT[y&gt;2]                        # all rows where DT$y &gt; 2
+DT[y&gt;2 &amp; v&gt;5]                  # compound logical expressions
+DT[!2:4]                       # all rows other than 2:4
+DT[-(2:4)]                     # same
+```
+---
+- 分组计算
+
+
+
+```r
+DT = DF
+head(DT)
+```
+
+```
+##    x y v
+## 1: b 1 1
+## 2: b 3 2
+## 3: b 6 3
+## 4: a 1 4
+## 5: a 3 5
+## 6: a 6 6
+```
+
+```r
+DT[, sum(v), by=x]             # ad hoc by, order of groups preserved in result
+```
+
+```
+##    x V1
+## 1: b  6
+## 2: a 15
+## 3: c 24
+```
+
+```r
+DT[, sum(v), keyby=x]          # same, but order the result on by cols
+```
+
+```
+##    x V1
+## 1: a 15
+## 2: b  6
+## 3: c 24
+```
+---
+- 分组计算
+
+```r
+DT[,.(sum = sum(v) , avg = mean(v)),keyby = list(x,y)]
+```
+
+```
+##    x y sum avg
+## 1: a 1   4   4
+## 2: a 3   5   5
+## 3: a 6   6   6
+## 4: b 1   1   1
+## 5: b 3   2   2
+## 6: b 6   3   3
+## 7: c 1   7   7
+## 8: c 3   8   8
+## 9: c 6   9   9
+```
+
+```r
+DT[,.(sum = sum(v) , avg = mean(v)),keyby = list(x)]
+```
+
+```
+##    x sum avg
+## 1: a  15   5
+## 2: b   6   2
+## 3: c  24   8
+```
+
+---
+- 添加新列
+
+
+```r
+DT[,sum_v := sum(v)]
+DT
+```
+
+```
+##    x y v sum_v
+## 1: b 1 1    45
+## 2: b 3 2    45
+## 3: b 6 3    45
+## 4: a 1 4    45
+## 5: a 3 5    45
+## 6: a 6 6    45
+## 7: c 1 7    45
+## 8: c 3 8    45
+## 9: c 6 9    45
+```
+
+```r
+DT[,sum_v_byx := sum(v),by=x]
+DT
+```
+
+```
+##    x y v sum_v sum_v_byx
+## 1: b 1 1    45         6
+## 2: b 3 2    45         6
+## 3: b 6 3    45         6
+## 4: a 1 4    45        15
+## 5: a 3 5    45        15
+## 6: a 6 6    45        15
+## 7: c 1 7    45        24
+## 8: c 3 8    45        24
+## 9: c 6 9    45        24
+```
+---
+- 其他
+
+
+```r
+DT[,.N]    # 行数
+```
+
+```
+## [1] 9
+```
+
+```r
+DT[,.N,by = x ] # 分组计算行数
+```
+
+```
+##    x N
+## 1: b 3
+## 2: a 3
+## 3: c 3
+```
+
+```r
+DT[,.SD[1:2]]   # 前两行
+```
+
+```
+##    x y v sum_v sum_v_byx
+## 1: b 1 1    45         6
+## 2: b 3 2    45         6
+```
+
+```r
+# DT[,.SD[1:2], by = x]   # 分组前两行
+DT[,.SD[,1:2]]
+```
+
+```
+##    x y
+## 1: b 1
+## 2: b 3
+## 3: b 6
+## 4: a 1
+## 5: a 3
+## 6: a 6
+## 7: c 1
+## 8: c 3
+## 9: c 6
+```
+
+---
+# reshape2
+- melt
+
+
+```r
+require(reshape2)
+```
+
+```
+## Loading required package: reshape2
+```
+
+```
+## 
+## Attaching package: 'reshape2'
+```
+
+```
+## The following objects are masked from 'package:data.table':
+## 
+##     dcast, melt
+```
+
+```r
+names(airquality) &lt;- tolower(names(airquality))
+head(airquality)
+```
+
+```
+##   ozone solar.r wind temp month day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+```
+
+```r
+melt(airquality, id=c("month", "day"))
+```
+
+```
+##     month day variable value
+## 1       5   1    ozone  41.0
+## 2       5   2    ozone  36.0
+## 3       5   3    ozone  12.0
+## 4       5   4    ozone  18.0
+## 5       5   5    ozone    NA
+## 6       5   6    ozone  28.0
+## 7       5   7    ozone  23.0
+## 8       5   8    ozone  19.0
+## 9       5   9    ozone   8.0
+## 10      5  10    ozone    NA
+## 11      5  11    ozone   7.0
+## 12      5  12    ozone  16.0
+## 13      5  13    ozone  11.0
+## 14      5  14    ozone  14.0
+## 15      5  15    ozone  18.0
+## 16      5  16    ozone  14.0
+## 17      5  17    ozone  34.0
+## 18      5  18    ozone   6.0
+## 19      5  19    ozone  30.0
+## 20      5  20    ozone  11.0
+## 21      5  21    ozone   1.0
+## 22      5  22    ozone  11.0
+## 23      5  23    ozone   4.0
+## 24      5  24    ozone  32.0
+## 25      5  25    ozone    NA
+## 26      5  26    ozone    NA
+## 27      5  27    ozone    NA
+## 28      5  28    ozone  23.0
+## 29      5  29    ozone  45.0
+## 30      5  30    ozone 115.0
+## 31      5  31    ozone  37.0
+## 32      6   1    ozone    NA
+## 33      6   2    ozone    NA
+## 34      6   3    ozone    NA
+## 35      6   4    ozone    NA
+## 36      6   5    ozone    NA
+## 37      6   6    ozone    NA
+## 38      6   7    ozone  29.0
+## 39      6   8    ozone    NA
+## 40      6   9    ozone  71.0
+## 41      6  10    ozone  39.0
+## 42      6  11    ozone    NA
+## 43      6  12    ozone    NA
+## 44      6  13    ozone  23.0
+## 45      6  14    ozone    NA
+## 46      6  15    ozone    NA
+## 47      6  16    ozone  21.0
+## 48      6  17    ozone  37.0
+## 49      6  18    ozone  20.0
+## 50      6  19    ozone  12.0
+## 51      6  20    ozone  13.0
+## 52      6  21    ozone    NA
+## 53      6  22    ozone    NA
+## 54      6  23    ozone    NA
+## 55      6  24    ozone    NA
+## 56      6  25    ozone    NA
+## 57      6  26    ozone    NA
+## 58      6  27    ozone    NA
+## 59      6  28    ozone    NA
+## 60      6  29    ozone    NA
+## 61      6  30    ozone    NA
+## 62      7   1    ozone 135.0
+## 63      7   2    ozone  49.0
+## 64      7   3    ozone  32.0
+## 65      7   4    ozone    NA
+## 66      7   5    ozone  64.0
+## 67      7   6    ozone  40.0
+## 68      7   7    ozone  77.0
+## 69      7   8    ozone  97.0
+## 70      7   9    ozone  97.0
+## 71      7  10    ozone  85.0
+## 72      7  11    ozone    NA
+## 73      7  12    ozone  10.0
+## 74      7  13    ozone  27.0
+## 75      7  14    ozone    NA
+## 76      7  15    ozone   7.0
+## 77      7  16    ozone  48.0
+## 78      7  17    ozone  35.0
+## 79      7  18    ozone  61.0
+## 80      7  19    ozone  79.0
+## 81      7  20    ozone  63.0
+## 82      7  21    ozone  16.0
+## 83      7  22    ozone    NA
+## 84      7  23    ozone    NA
+## 85      7  24    ozone  80.0
+## 86      7  25    ozone 108.0
+## 87      7  26    ozone  20.0
+## 88      7  27    ozone  52.0
+## 89      7  28    ozone  82.0
+## 90      7  29    ozone  50.0
+## 91      7  30    ozone  64.0
+## 92      7  31    ozone  59.0
+## 93      8   1    ozone  39.0
+## 94      8   2    ozone   9.0
+## 95      8   3    ozone  16.0
+## 96      8   4    ozone  78.0
+## 97      8   5    ozone  35.0
+## 98      8   6    ozone  66.0
+## 99      8   7    ozone 122.0
+## 100     8   8    ozone  89.0
+## 101     8   9    ozone 110.0
+## 102     8  10    ozone    NA
+## 103     8  11    ozone    NA
+## 104     8  12    ozone  44.0
+## 105     8  13    ozone  28.0
+## 106     8  14    ozone  65.0
+## 107     8  15    ozone    NA
+## 108     8  16    ozone  22.0
+## 109     8  17    ozone  59.0
+## 110     8  18    ozone  23.0
+## 111     8  19    ozone  31.0
+## 112     8  20    ozone  44.0
+## 113     8  21    ozone  21.0
+## 114     8  22    ozone   9.0
+## 115     8  23    ozone    NA
+## 116     8  24    ozone  45.0
+## 117     8  25    ozone 168.0
+## 118     8  26    ozone  73.0
+## 119     8  27    ozone    NA
+## 120     8  28    ozone  76.0
+## 121     8  29    ozone 118.0
+## 122     8  30    ozone  84.0
+## 123     8  31    ozone  85.0
+## 124     9   1    ozone  96.0
+## 125     9   2    ozone  78.0
+## 126     9   3    ozone  73.0
+## 127     9   4    ozone  91.0
+## 128     9   5    ozone  47.0
+## 129     9   6    ozone  32.0
+## 130     9   7    ozone  20.0
+## 131     9   8    ozone  23.0
+## 132     9   9    ozone  21.0
+## 133     9  10    ozone  24.0
+## 134     9  11    ozone  44.0
+## 135     9  12    ozone  21.0
+## 136     9  13    ozone  28.0
+## 137     9  14    ozone   9.0
+## 138     9  15    ozone  13.0
+## 139     9  16    ozone  46.0
+## 140     9  17    ozone  18.0
+## 141     9  18    ozone  13.0
+## 142     9  19    ozone  24.0
+## 143     9  20    ozone  16.0
+## 144     9  21    ozone  13.0
+## 145     9  22    ozone  23.0
+## 146     9  23    ozone  36.0
+## 147     9  24    ozone   7.0
+## 148     9  25    ozone  14.0
+## 149     9  26    ozone  30.0
+## 150     9  27    ozone    NA
+## 151     9  28    ozone  14.0
+## 152     9  29    ozone  18.0
+## 153     9  30    ozone  20.0
+## 154     5   1  solar.r 190.0
+## 155     5   2  solar.r 118.0
+## 156     5   3  solar.r 149.0
+## 157     5   4  solar.r 313.0
+## 158     5   5  solar.r    NA
+## 159     5   6  solar.r    NA
+## 160     5   7  solar.r 299.0
+## 161     5   8  solar.r  99.0
+## 162     5   9  solar.r  19.0
+## 163     5  10  solar.r 194.0
+## 164     5  11  solar.r    NA
+## 165     5  12  solar.r 256.0
+## 166     5  13  solar.r 290.0
+## 167     5  14  solar.r 274.0
+## 168     5  15  solar.r  65.0
+## 169     5  16  solar.r 334.0
+## 170     5  17  solar.r 307.0
+## 171     5  18  solar.r  78.0
+## 172     5  19  solar.r 322.0
+## 173     5  20  solar.r  44.0
+## 174     5  21  solar.r   8.0
+## 175     5  22  solar.r 320.0
+## 176     5  23  solar.r  25.0
+## 177     5  24  solar.r  92.0
+## 178     5  25  solar.r  66.0
+## 179     5  26  solar.r 266.0
+## 180     5  27  solar.r    NA
+## 181     5  28  solar.r  13.0
+## 182     5  29  solar.r 252.0
+## 183     5  30  solar.r 223.0
+## 184     5  31  solar.r 279.0
+## 185     6   1  solar.r 286.0
+## 186     6   2  solar.r 287.0
+## 187     6   3  solar.r 242.0
+## 188     6   4  solar.r 186.0
+## 189     6   5  solar.r 220.0
+## 190     6   6  solar.r 264.0
+## 191     6   7  solar.r 127.0
+## 192     6   8  solar.r 273.0
+## 193     6   9  solar.r 291.0
+## 194     6  10  solar.r 323.0
+## 195     6  11  solar.r 259.0
+## 196     6  12  solar.r 250.0
+## 197     6  13  solar.r 148.0
+## 198     6  14  solar.r 332.0
+## 199     6  15  solar.r 322.0
+## 200     6  16  solar.r 191.0
+## 201     6  17  solar.r 284.0
+## 202     6  18  solar.r  37.0
+## 203     6  19  solar.r 120.0
+## 204     6  20  solar.r 137.0
+## 205     6  21  solar.r 150.0
+## 206     6  22  solar.r  59.0
+## 207     6  23  solar.r  91.0
+## 208     6  24  solar.r 250.0
+## 209     6  25  solar.r 135.0
+## 210     6  26  solar.r 127.0
+## 211     6  27  solar.r  47.0
+## 212     6  28  solar.r  98.0
+## 213     6  29  solar.r  31.0
+## 214     6  30  solar.r 138.0
+## 215     7   1  solar.r 269.0
+## 216     7   2  solar.r 248.0
+## 217     7   3  solar.r 236.0
+## 218     7   4  solar.r 101.0
+## 219     7   5  solar.r 175.0
+## 220     7   6  solar.r 314.0
+## 221     7   7  solar.r 276.0
+## 222     7   8  solar.r 267.0
+## 223     7   9  solar.r 272.0
+## 224     7  10  solar.r 175.0
+## 225     7  11  solar.r 139.0
+## 226     7  12  solar.r 264.0
+## 227     7  13  solar.r 175.0
+## 228     7  14  solar.r 291.0
+## 229     7  15  solar.r  48.0
+## 230     7  16  solar.r 260.0
+## 231     7  17  solar.r 274.0
+## 232     7  18  solar.r 285.0
+## 233     7  19  solar.r 187.0
+## 234     7  20  solar.r 220.0
+## 235     7  21  solar.r   7.0
+## 236     7  22  solar.r 258.0
+## 237     7  23  solar.r 295.0
+## 238     7  24  solar.r 294.0
+## 239     7  25  solar.r 223.0
+## 240     7  26  solar.r  81.0
+## 241     7  27  solar.r  82.0
+## 242     7  28  solar.r 213.0
+## 243     7  29  solar.r 275.0
+## 244     7  30  solar.r 253.0
+## 245     7  31  solar.r 254.0
+## 246     8   1  solar.r  83.0
+## 247     8   2  solar.r  24.0
+## 248     8   3  solar.r  77.0
+## 249     8   4  solar.r    NA
+## 250     8   5  solar.r    NA
+## 251     8   6  solar.r    NA
+## 252     8   7  solar.r 255.0
+## 253     8   8  solar.r 229.0
+## 254     8   9  solar.r 207.0
+## 255     8  10  solar.r 222.0
+## 256     8  11  solar.r 137.0
+## 257     8  12  solar.r 192.0
+## 258     8  13  solar.r 273.0
+## 259     8  14  solar.r 157.0
+## 260     8  15  solar.r  64.0
+## 261     8  16  solar.r  71.0
+## 262     8  17  solar.r  51.0
+## 263     8  18  solar.r 115.0
+## 264     8  19  solar.r 244.0
+## 265     8  20  solar.r 190.0
+## 266     8  21  solar.r 259.0
+## 267     8  22  solar.r  36.0
+## 268     8  23  solar.r 255.0
+## 269     8  24  solar.r 212.0
+## 270     8  25  solar.r 238.0
+## 271     8  26  solar.r 215.0
+## 272     8  27  solar.r 153.0
+## 273     8  28  solar.r 203.0
+## 274     8  29  solar.r 225.0
+## 275     8  30  solar.r 237.0
+## 276     8  31  solar.r 188.0
+## 277     9   1  solar.r 167.0
+## 278     9   2  solar.r 197.0
+## 279     9   3  solar.r 183.0
+## 280     9   4  solar.r 189.0
+## 281     9   5  solar.r  95.0
+## 282     9   6  solar.r  92.0
+## 283     9   7  solar.r 252.0
+## 284     9   8  solar.r 220.0
+## 285     9   9  solar.r 230.0
+## 286     9  10  solar.r 259.0
+## 287     9  11  solar.r 236.0
+## 288     9  12  solar.r 259.0
+## 289     9  13  solar.r 238.0
+## 290     9  14  solar.r  24.0
+## 291     9  15  solar.r 112.0
+## 292     9  16  solar.r 237.0
+## 293     9  17  solar.r 224.0
+## 294     9  18  solar.r  27.0
+## 295     9  19  solar.r 238.0
+## 296     9  20  solar.r 201.0
+## 297     9  21  solar.r 238.0
+## 298     9  22  solar.r  14.0
+## 299     9  23  solar.r 139.0
+## 300     9  24  solar.r  49.0
+## 301     9  25  solar.r  20.0
+## 302     9  26  solar.r 193.0
+## 303     9  27  solar.r 145.0
+## 304     9  28  solar.r 191.0
+## 305     9  29  solar.r 131.0
+## 306     9  30  solar.r 223.0
+## 307     5   1     wind   7.4
+## 308     5   2     wind   8.0
+## 309     5   3     wind  12.6
+## 310     5   4     wind  11.5
+## 311     5   5     wind  14.3
+## 312     5   6     wind  14.9
+## 313     5   7     wind   8.6
+## 314     5   8     wind  13.8
+## 315     5   9     wind  20.1
+## 316     5  10     wind   8.6
+## 317     5  11     wind   6.9
+## 318     5  12     wind   9.7
+## 319     5  13     wind   9.2
+## 320     5  14     wind  10.9
+## 321     5  15     wind  13.2
+## 322     5  16     wind  11.5
+## 323     5  17     wind  12.0
+## 324     5  18     wind  18.4
+## 325     5  19     wind  11.5
+## 326     5  20     wind   9.7
+## 327     5  21     wind   9.7
+## 328     5  22     wind  16.6
+## 329     5  23     wind   9.7
+## 330     5  24     wind  12.0
+## 331     5  25     wind  16.6
+## 332     5  26     wind  14.9
+## 333     5  27     wind   8.0
+## 334     5  28     wind  12.0
+## 335     5  29     wind  14.9
+## 336     5  30     wind   5.7
+## 337     5  31     wind   7.4
+## 338     6   1     wind   8.6
+## 339     6   2     wind   9.7
+## 340     6   3     wind  16.1
+## 341     6   4     wind   9.2
+## 342     6   5     wind   8.6
+## 343     6   6     wind  14.3
+## 344     6   7     wind   9.7
+## 345     6   8     wind   6.9
+## 346     6   9     wind  13.8
+## 347     6  10     wind  11.5
+## 348     6  11     wind  10.9
+## 349     6  12     wind   9.2
+## 350     6  13     wind   8.0
+## 351     6  14     wind  13.8
+## 352     6  15     wind  11.5
+## 353     6  16     wind  14.9
+## 354     6  17     wind  20.7
+## 355     6  18     wind   9.2
+## 356     6  19     wind  11.5
+## 357     6  20     wind  10.3
+## 358     6  21     wind   6.3
+## 359     6  22     wind   1.7
+## 360     6  23     wind   4.6
+## 361     6  24     wind   6.3
+## 362     6  25     wind   8.0
+## 363     6  26     wind   8.0
+## 364     6  27     wind  10.3
+## 365     6  28     wind  11.5
+## 366     6  29     wind  14.9
+## 367     6  30     wind   8.0
+## 368     7   1     wind   4.1
+## 369     7   2     wind   9.2
+## 370     7   3     wind   9.2
+## 371     7   4     wind  10.9
+## 372     7   5     wind   4.6
+## 373     7   6     wind  10.9
+## 374     7   7     wind   5.1
+## 375     7   8     wind   6.3
+## 376     7   9     wind   5.7
+## 377     7  10     wind   7.4
+## 378     7  11     wind   8.6
+## 379     7  12     wind  14.3
+## 380     7  13     wind  14.9
+## 381     7  14     wind  14.9
+## 382     7  15     wind  14.3
+## 383     7  16     wind   6.9
+## 384     7  17     wind  10.3
+## 385     7  18     wind   6.3
+## 386     7  19     wind   5.1
+## 387     7  20     wind  11.5
+## 388     7  21     wind   6.9
+## 389     7  22     wind   9.7
+## 390     7  23     wind  11.5
+## 391     7  24     wind   8.6
+## 392     7  25     wind   8.0
+## 393     7  26     wind   8.6
+## 394     7  27     wind  12.0
+## 395     7  28     wind   7.4
+## 396     7  29     wind   7.4
+## 397     7  30     wind   7.4
+## 398     7  31     wind   9.2
+## 399     8   1     wind   6.9
+## 400     8   2     wind  13.8
+## 401     8   3     wind   7.4
+## 402     8   4     wind   6.9
+## 403     8   5     wind   7.4
+## 404     8   6     wind   4.6
+## 405     8   7     wind   4.0
+## 406     8   8     wind  10.3
+## 407     8   9     wind   8.0
+## 408     8  10     wind   8.6
+## 409     8  11     wind  11.5
+## 410     8  12     wind  11.5
+## 411     8  13     wind  11.5
+## 412     8  14     wind   9.7
+## 413     8  15     wind  11.5
+## 414     8  16     wind  10.3
+## 415     8  17     wind   6.3
+## 416     8  18     wind   7.4
+## 417     8  19     wind  10.9
+## 418     8  20     wind  10.3
+## 419     8  21     wind  15.5
+## 420     8  22     wind  14.3
+## 421     8  23     wind  12.6
+## 422     8  24     wind   9.7
+## 423     8  25     wind   3.4
+## 424     8  26     wind   8.0
+## 425     8  27     wind   5.7
+## 426     8  28     wind   9.7
+## 427     8  29     wind   2.3
+## 428     8  30     wind   6.3
+## 429     8  31     wind   6.3
+## 430     9   1     wind   6.9
+## 431     9   2     wind   5.1
+## 432     9   3     wind   2.8
+## 433     9   4     wind   4.6
+## 434     9   5     wind   7.4
+## 435     9   6     wind  15.5
+## 436     9   7     wind  10.9
+## 437     9   8     wind  10.3
+## 438     9   9     wind  10.9
+## 439     9  10     wind   9.7
+## 440     9  11     wind  14.9
+## 441     9  12     wind  15.5
+## 442     9  13     wind   6.3
+## 443     9  14     wind  10.9
+## 444     9  15     wind  11.5
+## 445     9  16     wind   6.9
+## 446     9  17     wind  13.8
+## 447     9  18     wind  10.3
+## 448     9  19     wind  10.3
+## 449     9  20     wind   8.0
+## 450     9  21     wind  12.6
+## 451     9  22     wind   9.2
+## 452     9  23     wind  10.3
+## 453     9  24     wind  10.3
+## 454     9  25     wind  16.6
+## 455     9  26     wind   6.9
+## 456     9  27     wind  13.2
+## 457     9  28     wind  14.3
+## 458     9  29     wind   8.0
+## 459     9  30     wind  11.5
+## 460     5   1     temp  67.0
+## 461     5   2     temp  72.0
+## 462     5   3     temp  74.0
+## 463     5   4     temp  62.0
+## 464     5   5     temp  56.0
+## 465     5   6     temp  66.0
+## 466     5   7     temp  65.0
+## 467     5   8     temp  59.0
+## 468     5   9     temp  61.0
+## 469     5  10     temp  69.0
+## 470     5  11     temp  74.0
+## 471     5  12     temp  69.0
+## 472     5  13     temp  66.0
+## 473     5  14     temp  68.0
+## 474     5  15     temp  58.0
+## 475     5  16     temp  64.0
+## 476     5  17     temp  66.0
+## 477     5  18     temp  57.0
+## 478     5  19     temp  68.0
+## 479     5  20     temp  62.0
+## 480     5  21     temp  59.0
+## 481     5  22     temp  73.0
+## 482     5  23     temp  61.0
+## 483     5  24     temp  61.0
+## 484     5  25     temp  57.0
+## 485     5  26     temp  58.0
+## 486     5  27     temp  57.0
+## 487     5  28     temp  67.0
+## 488     5  29     temp  81.0
+## 489     5  30     temp  79.0
+## 490     5  31     temp  76.0
+## 491     6   1     temp  78.0
+## 492     6   2     temp  74.0
+## 493     6   3     temp  67.0
+## 494     6   4     temp  84.0
+## 495     6   5     temp  85.0
+## 496     6   6     temp  79.0
+## 497     6   7     temp  82.0
+## 498     6   8     temp  87.0
+## 499     6   9     temp  90.0
+## 500     6  10     temp  87.0
+## 501     6  11     temp  93.0
+## 502     6  12     temp  92.0
+## 503     6  13     temp  82.0
+## 504     6  14     temp  80.0
+## 505     6  15     temp  79.0
+## 506     6  16     temp  77.0
+## 507     6  17     temp  72.0
+## 508     6  18     temp  65.0
+## 509     6  19     temp  73.0
+## 510     6  20     temp  76.0
+## 511     6  21     temp  77.0
+## 512     6  22     temp  76.0
+## 513     6  23     temp  76.0
+## 514     6  24     temp  76.0
+## 515     6  25     temp  75.0
+## 516     6  26     temp  78.0
+## 517     6  27     temp  73.0
+## 518     6  28     temp  80.0
+## 519     6  29     temp  77.0
+## 520     6  30     temp  83.0
+## 521     7   1     temp  84.0
+## 522     7   2     temp  85.0
+## 523     7   3     temp  81.0
+## 524     7   4     temp  84.0
+## 525     7   5     temp  83.0
+## 526     7   6     temp  83.0
+## 527     7   7     temp  88.0
+## 528     7   8     temp  92.0
+## 529     7   9     temp  92.0
+## 530     7  10     temp  89.0
+## 531     7  11     temp  82.0
+## 532     7  12     temp  73.0
+## 533     7  13     temp  81.0
+## 534     7  14     temp  91.0
+## 535     7  15     temp  80.0
+## 536     7  16     temp  81.0
+## 537     7  17     temp  82.0
+## 538     7  18     temp  84.0
+## 539     7  19     temp  87.0
+## 540     7  20     temp  85.0
+## 541     7  21     temp  74.0
+## 542     7  22     temp  81.0
+## 543     7  23     temp  82.0
+## 544     7  24     temp  86.0
+## 545     7  25     temp  85.0
+## 546     7  26     temp  82.0
+## 547     7  27     temp  86.0
+## 548     7  28     temp  88.0
+## 549     7  29     temp  86.0
+## 550     7  30     temp  83.0
+## 551     7  31     temp  81.0
+## 552     8   1     temp  81.0
+## 553     8   2     temp  81.0
+## 554     8   3     temp  82.0
+## 555     8   4     temp  86.0
+## 556     8   5     temp  85.0
+## 557     8   6     temp  87.0
+## 558     8   7     temp  89.0
+## 559     8   8     temp  90.0
+## 560     8   9     temp  90.0
+## 561     8  10     temp  92.0
+## 562     8  11     temp  86.0
+## 563     8  12     temp  86.0
+## 564     8  13     temp  82.0
+## 565     8  14     temp  80.0
+## 566     8  15     temp  79.0
+## 567     8  16     temp  77.0
+## 568     8  17     temp  79.0
+## 569     8  18     temp  76.0
+## 570     8  19     temp  78.0
+## 571     8  20     temp  78.0
+## 572     8  21     temp  77.0
+## 573     8  22     temp  72.0
+## 574     8  23     temp  75.0
+## 575     8  24     temp  79.0
+## 576     8  25     temp  81.0
+## 577     8  26     temp  86.0
+## 578     8  27     temp  88.0
+## 579     8  28     temp  97.0
+## 580     8  29     temp  94.0
+## 581     8  30     temp  96.0
+## 582     8  31     temp  94.0
+## 583     9   1     temp  91.0
+## 584     9   2     temp  92.0
+## 585     9   3     temp  93.0
+## 586     9   4     temp  93.0
+## 587     9   5     temp  87.0
+## 588     9   6     temp  84.0
+## 589     9   7     temp  80.0
+## 590     9   8     temp  78.0
+## 591     9   9     temp  75.0
+## 592     9  10     temp  73.0
+## 593     9  11     temp  81.0
+## 594     9  12     temp  76.0
+## 595     9  13     temp  77.0
+## 596     9  14     temp  71.0
+## 597     9  15     temp  71.0
+## 598     9  16     temp  78.0
+## 599     9  17     temp  67.0
+## 600     9  18     temp  76.0
+## 601     9  19     temp  68.0
+## 602     9  20     temp  82.0
+## 603     9  21     temp  64.0
+## 604     9  22     temp  71.0
+## 605     9  23     temp  81.0
+## 606     9  24     temp  69.0
+## 607     9  25     temp  63.0
+## 608     9  26     temp  70.0
+## 609     9  27     temp  77.0
+## 610     9  28     temp  75.0
+## 611     9  29     temp  76.0
+## 612     9  30     temp  68.0
+```
+---
+- acast
+
+```r
+names(airquality) &lt;- tolower(names(airquality))
+aqm &lt;- melt(airquality, id=c("month", "day"), na.rm=TRUE)
+head(aqm)
+```
+
+```
+##   month day variable value
+## 1     5   1    ozone    41
+## 2     5   2    ozone    36
+## 3     5   3    ozone    12
+## 4     5   4    ozone    18
+## 6     5   6    ozone    28
+## 7     5   7    ozone    23
+```
+
+```r
+acast(aqm, month ~ variable, mean)
+```
+
+```
+##      ozone  solar.r      wind     temp
+## 5 23.61538 181.2963 11.622581 65.54839
+## 6 29.44444 190.1667 10.266667 79.10000
+## 7 59.11538 216.4839  8.941935 83.90323
+## 8 59.96154 171.8571  8.793548 83.96774
+## 9 31.44828 167.4333 10.180000 76.90000
+```
+
+---
+# ggplot2
+- 点图
+
+```r
+require(ggplot2)
+```
+
+```
+## Loading required package: ggplot2
+```
+
+```r
+p &lt;- ggplot(mtcars, aes(x = wt, y = mpg))
+p + geom_point()
+```
+
+![](R_files/figure-html/unnamed-chunk-47-1.png)&lt;!-- --&gt;
+---
+- 线图
+
+```r
+p+geom_line(color = "red") +labs(x = "x轴",y="y轴",title = "标题 : 这是个线图") + 
+  theme(text = element_text(family = "STHeiti"), # 设置中文字体(MAC)
+        plot.title = element_text(hjust = 0.5) #标题居中
+        ) 
+```
+
+![](R_files/figure-html/unnamed-chunk-48-1.png)&lt;!-- --&gt;
+---
+
+```r
+p + geom_line() + geom_point() +labs(x = "x轴",y="y轴",title = "标题 : 这是个线+点图") + 
+  theme(text = element_text(family = "STHeiti"),# 设置中文字体
+        plot.title = element_text(hjust = 0.5) #标题居中
+        ) 
+```
+
+![](R_files/figure-html/unnamed-chunk-49-1.png)&lt;!-- --&gt;
+---
+- 分组线图
+
+```r
+head(mtcars)
+```
+
+```
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+```
+
+
+```r
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point(aes(colour = factor(cyl), shape = factor(vs))) +
+  labs(
+    x = "Weight (1000 lbs)",
+    y = "Fuel economy (mpg)",
+    colour = "Cylinders",
+    shape = "Transmission"
+   )
+```
+---
+![](R_files/figure-html/unnamed-chunk-52-1.png)&lt;!-- --&gt;
+
+---
+- 柱状图
+
+```r
+g &lt;- ggplot(mpg, aes(class))
+# Number of cars in each class:
+g + geom_bar()
+```
+
+![](R_files/figure-html/unnamed-chunk-53-1.png)&lt;!-- --&gt;
+---
+
+```r
+g +
+ geom_bar(aes(fill = drv), 
+          position = position_stack(reverse = F)) + 
+ coord_flip() + 
+ theme(legend.position = "top")
+```
+
+![](R_files/figure-html/unnamed-chunk-54-1.png)&lt;!-- --&gt;
+---
+- position 参数说明
+
+
+ 名称 | 描述
+ ---- | ----
+ dodge  | 避免重叠，并排放置
+ fill | 堆叠元素并将高度标准化为1
+ identify | 不做任何调整
+ jitter | 给点添加扰动避免重合
+ stack  | 将图形元素堆叠起来
+
+
+.footnote[
+-ggplot2：数据分析与图形艺术
+]
+
+---
+- pie 
+
+---
+- 可交互画图包
+
+```r
+# recharts  : echart的R语言接口
+# plotly    : 可以与ggplot完美结合，将ggplot2的图形转换为可交互图形
+g = ggplot(mtcars,  aes(wt, mpg)) + geom_point()
+plotly::ggplotly(g)
+```
+
+<div id="htmlwidget-dcfc9b64d4cc23e6c85d" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dcfc9b64d4cc23e6c85d">{"x":{"data":[{"x":[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44,3.44,4.07,3.73,3.78,5.25,5.424,5.345,2.2,1.615,1.835,2.465,3.52,3.435,3.84,3.845,1.935,2.14,1.513,3.17,2.77,3.57,2.78],"y":[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2,17.8,16.4,17.3,15.2,10.4,10.4,14.7,32.4,30.4,33.9,21.5,15.5,15.2,13.3,19.2,27.3,26,30.4,15.8,19.7,15,21.4],"text":["wt: 2.620<br />mpg: 21.0","wt: 2.875<br />mpg: 21.0","wt: 2.320<br />mpg: 22.8","wt: 3.215<br />mpg: 21.4","wt: 3.440<br />mpg: 18.7","wt: 3.460<br />mpg: 18.1","wt: 3.570<br />mpg: 14.3","wt: 3.190<br />mpg: 24.4","wt: 3.150<br />mpg: 22.8","wt: 3.440<br />mpg: 19.2","wt: 3.440<br />mpg: 17.8","wt: 4.070<br />mpg: 16.4","wt: 3.730<br />mpg: 17.3","wt: 3.780<br />mpg: 15.2","wt: 5.250<br />mpg: 10.4","wt: 5.424<br />mpg: 10.4","wt: 5.345<br />mpg: 14.7","wt: 2.200<br />mpg: 32.4","wt: 1.615<br />mpg: 30.4","wt: 1.835<br />mpg: 33.9","wt: 2.465<br />mpg: 21.5","wt: 3.520<br />mpg: 15.5","wt: 3.435<br />mpg: 15.2","wt: 3.840<br />mpg: 13.3","wt: 3.845<br />mpg: 19.2","wt: 1.935<br />mpg: 27.3","wt: 2.140<br />mpg: 26.0","wt: 1.513<br />mpg: 30.4","wt: 3.170<br />mpg: 15.8","wt: 2.770<br />mpg: 19.7","wt: 3.570<br />mpg: 15.0","wt: 2.780<br />mpg: 21.4"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.3059360730594,"r":7.30593607305936,"b":37.2602739726027,"l":37.2602739726027},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.31745,5.61955],"tickmode":"array","ticktext":["2","3","4","5"],"tickvals":[2,3,4,5],"categoryorder":"array","categoryarray":["2","3","4","5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"wt","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[9.225,35.075],"tickmode":"array","ticktext":["10","15","20","25","30","35"],"tickvals":[10,15,20,25,30,35],"categoryorder":"array","categoryarray":["10","15","20","25","30","35"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"mpg","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"118a5d3cd0ab":{"x":{},"y":{},"type":"scatter"}},"cur_data":"118a5d3cd0ab","visdat":{"118a5d3cd0ab":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+---
+# 相关参考资料
+
+1. R example 
+2. R语言实战
+3. R语言编程艺术
+4. 官网文档
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
